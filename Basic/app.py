@@ -1,6 +1,4 @@
-import json
-
-from blockchain import Blockchain
+from Basic.blockchain import Blockchain
 
 from flask import Flask, jsonify, request
 from uuid import uuid4
