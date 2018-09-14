@@ -1,11 +1,13 @@
 import hashlib
 import json
 from time import time
+from Advanced.pow import POW
 
 class Blockchain(object):
     def __init__(self):
         self.chain = []  # 블록 체인 저장 리스트
         self.current_transactions = []  # 거래 장부
+        self.POW = POW(4)
 
         # 이전 블록이 없는 최초의 블록인 genesis block을 생성하고, proof를 추가한다.
         self.new_block(data='Genesis', previous_hash=None)
@@ -16,10 +18,14 @@ class Blockchain(object):
             'timestamp': time(),
             'data': data,
             'previous_hash': previous_hash,
-            'hash': ''
+            'hash': '',
+            'nonce': 0
         }
-        hash_value = self.hash(block)
+        pow = self.POW.new_pow(block=block)
+        nonce, hash_value = self.POW.run_pow(pow)
+
         block['hash'] = hash_value
+        block['nonce'] = nonce
 
         self.chain.append(block)
 
